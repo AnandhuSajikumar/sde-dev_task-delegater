@@ -21,10 +21,9 @@ public class EngineerService {
                 .toList();
     }
 //GetById
-    public EngineerResponse getEngineerById(Long id){
-       Engineer engineer =  engineerRepository.findById(id)
+    public Engineer getEngineerById(Long id){
+       return engineerRepository.findById(id)
                .orElseThrow(() -> new RuntimeException("Engineer not found with id: " + id));
-       return EngineerMapper.toResponse(engineer);
     }
 //DeleteById
     public void deleteEngineerById(Long id){
@@ -38,8 +37,6 @@ public class EngineerService {
     public Engineer createEngineer(String name, String techStack, Gender gender){
         Engineer engineer = new Engineer(name,techStack,gender);
         return engineerRepository.save(engineer);
-
-
 //        Engineer engineer = EngineerMapper.toEntity(request);
 //        Engineer saved = engineerRepository.save(engineer);
 //        return EngineerMapper.toResponse(saved);

@@ -20,7 +20,8 @@ public class EngineerController {
 
     @GetMapping("{id}")
     public EngineerResponse getEngineerById(@PathVariable Long id){
-        return engineerService.getEngineerById(id);
+        Engineer engineer = engineerService.getEngineerById(id);
+        return EngineerMapper.toResponse(engineer);
     }
 
     @PostMapping

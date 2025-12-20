@@ -5,8 +5,10 @@ import com.anandhu.sde_dev.engineer.Engineer;
 import com.anandhu.sde_dev.engineer.EngineerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class TaskService{
+public class TaskService {
     private final TaskRepository taskRepository;
     private final EngineerRepository engineerRepository;
 
@@ -14,14 +16,43 @@ public class TaskService{
         this.taskRepository = taskRepository;
         this.engineerRepository = engineerRepository;
     }
-//Add TASK
-    public Task createTask (String title, TaskStatus taskStatus){
-        Task task = new Task(title,taskStatus);
+
+    //Create TASK
+    public Task createTask(String title, TaskStatus taskStatus) {
+        Task task = new Task(title, taskStatus);
         return taskRepository.save(task);
     }
 
-//assigning TASK
-    public Task assignTaskToEngineer(Long taskId, Long engineerId){
+    //UpdateTASK
+    public Task UpdateTask(Long id, String title, TaskStatus taskStatus){
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+        task.setTitle(title);
+        task.setStatus(taskStatus);
+        return taskRepository.save(task);
+    }
+
+    //GetAllTask
+    public List<Task> getAllTask() {
+        return taskRepository.findAll();
+    }
+
+    //GetTaskById
+    public Task getTaskById(Long id){
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+    }
+    //DeleteTASK
+    public void  deleteTaskById(Long id){
+        if (!taskRepository.existsById(id)){
+            throw new RuntimeException("Task not found");
+        }
+        taskRepository.deleteById(id);
+
+    }
+
+    //assigning TASK
+    public Task assignTaskToEngineer(Long taskId, Long engineerId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
 
@@ -31,5 +62,5 @@ public class TaskService{
         task.setEngineer(engineer);
         return taskRepository.save(task);
     }
-
 }
+
