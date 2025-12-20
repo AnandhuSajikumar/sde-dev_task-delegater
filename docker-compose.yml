@@ -1,0 +1,24 @@
+services:
+  db:
+    container_name: postgres-spring-boot
+    image: sha256:d18f711b0debf507cb7444a8cab1048ed560953c24d14babb29b02ee6db9dae8
+    environment:
+      POSTGRES_USER: nodev
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/postgres
+      TZ: Asia/Kolkata
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432"
+
+    networks:
+      - backend
+    restart: unless-stopped
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  db:
