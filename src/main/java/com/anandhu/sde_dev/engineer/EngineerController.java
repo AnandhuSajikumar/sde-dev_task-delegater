@@ -1,5 +1,9 @@
 package com.anandhu.sde_dev.engineer;
 
+import com.anandhu.sde_dev.task.TaskMapper;
+import com.anandhu.sde_dev.task.TaskRequest;
+import com.anandhu.sde_dev.task.TaskResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,14 +22,23 @@ public class EngineerController {
         return engineerService.getAllEngineers();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public EngineerResponse getEngineerById(@PathVariable Long id){
         Engineer engineer = engineerService.getEngineerById(id);
         return EngineerMapper.toResponse(engineer);
     }
+    @GetMapping("/{id}/tasks")
+    public List<TaskResponse> getAllTasksofEngineer(@PathVariable Long id){
+        Engineer engineer = engineerService.getEngineerById(id);
+        return engineer.getTasks()
+                .stream()
+                .map(TaskMapper::toResponse)
+                .toList();
+    }
+
 
     @PostMapping
-    public EngineerResponse createEngineer(@RequestBody EngineerRequest request){
+    public EngineerResponse createEngineer(@RequestBody @Valid EngineerRequest request){
         Engineer engineer = engineerService.createEngineer(
                 request.getName(),
                 request.getTechStack(),

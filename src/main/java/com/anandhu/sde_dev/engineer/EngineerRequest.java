@@ -5,7 +5,7 @@ import com.anandhu.sde_dev.common.Gender;
 public class EngineerRequest {
     private String name;
     private String techStack;
-    private Gender Gender;
+    private Gender gender;
 
 
     public EngineerRequest() {
@@ -20,12 +20,12 @@ public class EngineerRequest {
     }
 
     public Gender getGender() {
-        return Gender;
+        return gender;
     }
 
     public EngineerRequest(String name, String techStack, Gender gender) {
         this.name = name;
         this.techStack = techStack;
-        Gender = gender;
+        this.gender = gender;
     }
 }

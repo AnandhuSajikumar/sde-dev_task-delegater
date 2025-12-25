@@ -1,6 +1,7 @@
 package com.anandhu.sde_dev.engineer;
 
 import com.anandhu.sde_dev.common.Gender;
+import com.anandhu.sde_dev.exception.ResourceNotFoundException;
 import org.hibernate.sql.results.graph.entity.EntityFetch;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class EngineerService {
 //GetById
     public Engineer getEngineerById(Long id){
        return engineerRepository.findById(id)
-               .orElseThrow(() -> new RuntimeException("Engineer not found with id: " + id));
+               .orElseThrow(() -> new ResourceNotFoundException("Engineer not found with id: " + id));
     }
 //DeleteById
     public void deleteEngineerById(Long id){

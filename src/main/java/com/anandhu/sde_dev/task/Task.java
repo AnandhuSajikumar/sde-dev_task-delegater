@@ -4,12 +4,13 @@ import com.anandhu.sde_dev.common.TaskStatus;
 import com.anandhu.sde_dev.engineer.Engineer;
 import jakarta.persistence.*;
 import java.util.Objects;
-
+@Entity
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
     @ManyToOne
@@ -23,6 +24,11 @@ public class Task {
         this.title = title;
         this.status = status;
     }
+
+    public Task(Engineer engineer) {
+        this.engineer = engineer;
+    }
+
     public Engineer getEngineer() {
         return engineer;
     }

@@ -1,7 +1,8 @@
 package com.anandhu.sde_dev.task;
 
-import com.anandhu.sde_dev.common.TaskStatus;
-import org.springframework.stereotype.Controller;
+import com.anandhu.sde_dev.engineer.EngineerMapper;
+import com.anandhu.sde_dev.engineer.EngineerResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,10 +15,10 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
-
+//assignEngineer
     @PutMapping("/{taskId}/assign/{engineerId}")
-    public TaskResponse assignTaskToEnigneer(@PathVariable Long taskId, @PathVariable Long engieerId){
-        Task task = taskService.assignTaskToEngineer(taskId,engieerId);
+    public TaskResponse assignTaskToEnigneer(@PathVariable Long taskId, @PathVariable Long engineerId){
+        Task task = taskService.assignTaskToEngineer(taskId,engineerId);
         return TaskMapper.toResponse(task);
     }
     @GetMapping
@@ -33,17 +34,22 @@ public class TaskController {
         Task task = taskService.getTaskById(id);
         return TaskMapper.toResponse(task);
     }
+    @GetMapping("/{id}/engineer")
+    public EngineerResponse getEngineerofTask(@PathVariable Long id){
+        Task task = taskService.getTaskById(id);
+        return EngineerMapper.toResponse(task.getEngineer());
+    }
 
-    @PutMapping("/{id")
+    @PutMapping("/{id}")
     public TaskResponse UpdateTaskById(
             @PathVariable Long id,
-            @RequestBody TaskRequest request)
+            @Valid @RequestBody TaskRequest request)
     {
 
         Task task = taskService.UpdateTask(
                 id,
                 request.getTitle(),
-                request.getTaskStatus()
+                request.getStatus()
         );
         return TaskMapper.toResponse(task);
 
@@ -54,10 +60,10 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskResponse createNewTask(@RequestBody TaskRequest request){
+    public TaskResponse createNewTask(@Valid @RequestBody TaskRequest request){
         Task task = taskService.createTask(
                 request.getTitle(),
-                request.getTaskStatus()
+                request.getStatus()
         );
         return TaskMapper.toResponse(task);
     }

@@ -3,6 +3,8 @@ package com.anandhu.sde_dev.engineer;
 import com.anandhu.sde_dev.common.Gender;
 import com.anandhu.sde_dev.task.Task;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -14,11 +16,14 @@ public class Engineer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
     private Integer age;
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Gender gender;
     private BigDecimal salary;
+    @NotBlank
     private String techStack;
 
     @OneToMany(mappedBy = "engineer")
@@ -27,6 +32,7 @@ public class Engineer {
 
     public Engineer() {
     }
+
     public Engineer(String name, Integer age, Gender gender, BigDecimal salary, String techStack) {
         this.name = name;
         this.age = age;
@@ -38,6 +44,17 @@ public class Engineer {
         this.name = name;
         this.techStack = techStack;
         this.gender = gender;
+    }
+    public Engineer(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public Long getId() {

@@ -3,25 +3,24 @@ package com.anandhu.sde_dev.task;
 import com.anandhu.sde_dev.common.TaskStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.jspecify.annotations.NonNull;
 
 public class TaskRequest {
 
     @NotBlank
     private String title;
     @NotNull
-    private TaskStatus taskStatus;
+    private TaskStatus Status;
 
-    public TaskRequest(String title, TaskStatus taskStatus) {
+    public TaskRequest(String title, TaskStatus Status) {
         this.title = title;
-        this.taskStatus = taskStatus;
+        this.Status = Status;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public TaskStatus getTaskStatus() {
-        return taskStatus;
+    public TaskStatus getStatus() {
+        return Status;
     }
 }
