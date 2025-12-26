@@ -1,4 +1,4 @@
-package com.anandhu.sde_dev.engineer;
+package com.anandhu.sde_dev.dto.engineer;
 
 import com.anandhu.sde_dev.common.Gender;
 

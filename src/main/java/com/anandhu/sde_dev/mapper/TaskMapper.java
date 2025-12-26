@@ -1,4 +1,7 @@
-package com.anandhu.sde_dev.task;
+package com.anandhu.sde_dev.mapper;
+
+import com.anandhu.sde_dev.dto.task.TaskResponse;
+import com.anandhu.sde_dev.model.Task;
 
 public class TaskMapper {
 

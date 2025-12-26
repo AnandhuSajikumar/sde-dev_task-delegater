@@ -1,13 +1,12 @@
-package com.anandhu.sde_dev.engineer;
+package com.anandhu.sde_dev.service;
 
 import com.anandhu.sde_dev.common.Gender;
+import com.anandhu.sde_dev.model.Engineer;
+import com.anandhu.sde_dev.repository.EngineerRepository;
 import com.anandhu.sde_dev.exception.ResourceNotFoundException;
-import org.hibernate.sql.results.graph.entity.EntityFetch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EngineerService {

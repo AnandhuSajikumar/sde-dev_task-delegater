@@ -1,4 +1,4 @@
-package com.anandhu.sde_dev.task;
+package com.anandhu.sde_dev.dto.task;
 
 import com.anandhu.sde_dev.common.TaskStatus;
 import jakarta.validation.constraints.NotBlank;

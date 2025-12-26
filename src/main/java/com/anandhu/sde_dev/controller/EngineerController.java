@@ -1,8 +1,12 @@
-package com.anandhu.sde_dev.engineer;
+package com.anandhu.sde_dev.controller;
 
-import com.anandhu.sde_dev.task.TaskMapper;
-import com.anandhu.sde_dev.task.TaskRequest;
-import com.anandhu.sde_dev.task.TaskResponse;
+import com.anandhu.sde_dev.dto.engineer.EngineerRequest;
+import com.anandhu.sde_dev.dto.engineer.EngineerResponse;
+import com.anandhu.sde_dev.mapper.EngineerMapper;
+import com.anandhu.sde_dev.model.Engineer;
+import com.anandhu.sde_dev.service.EngineerService;
+import com.anandhu.sde_dev.mapper.TaskMapper;
+import com.anandhu.sde_dev.dto.task.TaskResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

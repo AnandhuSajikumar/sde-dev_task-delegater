@@ -1,9 +1,11 @@
-package com.anandhu.sde_dev.task;
+package com.anandhu.sde_dev.service;
 
 import com.anandhu.sde_dev.common.TaskStatus;
-import com.anandhu.sde_dev.engineer.Engineer;
-import com.anandhu.sde_dev.engineer.EngineerRepository;
+import com.anandhu.sde_dev.model.Engineer;
+import com.anandhu.sde_dev.repository.EngineerRepository;
 import com.anandhu.sde_dev.exception.ResourceNotFoundException;
+import com.anandhu.sde_dev.model.Task;
+import com.anandhu.sde_dev.repository.TaskRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

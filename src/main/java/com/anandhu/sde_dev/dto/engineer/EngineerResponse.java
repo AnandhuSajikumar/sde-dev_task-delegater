@@ -1,4 +1,4 @@
-package com.anandhu.sde_dev.engineer;
+package com.anandhu.sde_dev.dto.engineer;
 
 public class EngineerResponse {
     private Long id;

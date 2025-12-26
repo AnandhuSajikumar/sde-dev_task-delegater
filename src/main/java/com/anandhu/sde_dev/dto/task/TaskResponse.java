@@ -1,7 +1,6 @@
-package com.anandhu.sde_dev.task;
+package com.anandhu.sde_dev.dto.task;
 
 import com.anandhu.sde_dev.common.TaskStatus;
-import org.apache.catalina.Engine;
 
 public class TaskResponse {
     private Long id;

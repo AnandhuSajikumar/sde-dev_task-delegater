@@ -1,7 +1,6 @@
-package com.anandhu.sde_dev.task;
+package com.anandhu.sde_dev.model;
 
 import com.anandhu.sde_dev.common.TaskStatus;
-import com.anandhu.sde_dev.engineer.Engineer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,7 +1,6 @@
-package com.anandhu.sde_dev.engineer;
+package com.anandhu.sde_dev.model;
 
 import com.anandhu.sde_dev.common.Gender;
-import com.anandhu.sde_dev.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
