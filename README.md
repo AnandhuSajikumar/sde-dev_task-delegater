@@ -1,4 +1,4 @@
-1. Engineer Task Management Backend
+Engineer Task Management Backend
 
 A Spring Boot REST API for managing engineers and tracking tasks assigned to them.
 Built to practice production-style backend architecture, not demo CRUD.
