@@ -4,6 +4,9 @@ import com.anandhu.sde_dev.task.TaskMapper;
 import com.anandhu.sde_dev.task.TaskRequest;
 import com.anandhu.sde_dev.task.TaskResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +21,13 @@ public class EngineerController {
     }
 
     @GetMapping
-    public List<EngineerResponse> getEngineers(){
-        return engineerService.getAllEngineers();
+    public Page<EngineerResponse> getAllEngineers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Pageable pageable
+    ){
+        Page<Engineer> engineers = engineerService.getAllEngineers(PageRequest.of(page,size));
+        return engineers.map(EngineerMapper::toResponse);
     }
 
     @GetMapping("/{id}")

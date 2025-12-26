@@ -4,6 +4,8 @@ import com.anandhu.sde_dev.common.TaskStatus;
 import com.anandhu.sde_dev.engineer.Engineer;
 import com.anandhu.sde_dev.engineer.EngineerRepository;
 import com.anandhu.sde_dev.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +36,8 @@ public class TaskService {
     }
 
     //GetAllTask
-    public List<Task> getAllTask() {
-        return taskRepository.findAll();
+    public Page<Task> getAllTask(Pageable pageable){
+        return taskRepository.findAll(pageable);
     }
 
     //GetTaskById
@@ -50,6 +52,11 @@ public class TaskService {
         }
         taskRepository.deleteById(id);
 
+    }
+
+    //find Task By Status
+    public List<Task> getTaskByStatus(TaskStatus status){
+        return taskRepository.findTaskByStatus(status);
     }
 
     //assigning TASK

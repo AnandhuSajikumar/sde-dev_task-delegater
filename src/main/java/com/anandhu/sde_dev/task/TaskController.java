@@ -1,8 +1,12 @@
 package com.anandhu.sde_dev.task;
 
+import com.anandhu.sde_dev.common.TaskStatus;
 import com.anandhu.sde_dev.engineer.EngineerMapper;
 import com.anandhu.sde_dev.engineer.EngineerResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +26,21 @@ public class TaskController {
         return TaskMapper.toResponse(task);
     }
     @GetMapping
-    public List<TaskResponse> getAllTask(){
-        return taskService.getAllTask()
+    public Page<TaskResponse> getAllTask(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        Pageable pageable){
+        Page<Task> tasks = taskService.getAllTask(PageRequest.of(page,size));
+        return tasks.map(TaskMapper::toResponse);
+    }
+    @GetMapping("/filter")
+    public List<TaskResponse> getTaskByStatus(@RequestParam TaskStatus status){
+        return taskService.getTaskByStatus(status)
                 .stream()
                 .map(TaskMapper::toResponse)
                 .toList();
     }
+
 
     @GetMapping("/{id}")
     public TaskResponse getTaskById(@PathVariable Long id){

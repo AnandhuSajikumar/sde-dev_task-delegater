@@ -3,6 +3,8 @@ package com.anandhu.sde_dev.engineer;
 import com.anandhu.sde_dev.common.Gender;
 import com.anandhu.sde_dev.exception.ResourceNotFoundException;
 import org.hibernate.sql.results.graph.entity.EntityFetch;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +17,8 @@ public class EngineerService {
         this.engineerRepository = engineerRepository;
     }
 //GetALL
-    public List<EngineerResponse> getAllEngineers(){
-        return engineerRepository.findAll()
-                .stream()
-                .map(EngineerMapper::toResponse)
-                .toList();
+    public Page<Engineer> getAllEngineers(Pageable pageable){
+        return engineerRepository.findAll(pageable);
     }
 //GetById
     public Engineer getEngineerById(Long id){

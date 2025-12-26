@@ -3,14 +3,19 @@ package com.anandhu.sde_dev.task;
 import com.anandhu.sde_dev.common.TaskStatus;
 import com.anandhu.sde_dev.engineer.Engineer;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Objects;
 @Entity
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String title;
     @Enumerated(EnumType.STRING)
+    @NotNull
     private TaskStatus status;
 
     @ManyToOne
