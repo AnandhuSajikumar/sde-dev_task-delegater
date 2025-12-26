@@ -1,10 +1,11 @@
-Engineer Task Management Backend
+# 1) Engineer Task Management Backend
 
 A Spring Boot REST API for managing engineers and tracking tasks assigned to them.
-Built to practice production-style backend architecture, not demo CRUD.
+Built to practice **production-style backend architecture**, not demo CRUD.
 
+---
 
- 2. Tech Stack
+## 2) Tech Stack
 
 1. Java 21
 2. Spring Boot 3.x
@@ -13,16 +14,18 @@ Built to practice production-style backend architecture, not demo CRUD.
 5. Hibernate
 6. Maven
 
+---
 
-3. Domain Model
+## 3) Domain Model
 
 1. Engineer
 2. Task
 3. One Engineer can have many Tasks
 4. A Task can belong to one Engineer or be unassigned
 
+---
 
- 4. Features
+## 4) Features
 
 1. Create, update, delete engineers
 2. Create, update, delete tasks
@@ -33,11 +36,13 @@ Built to practice production-style backend architecture, not demo CRUD.
 7. Pagination on list APIs
 8. Request validation
 9. Global exception handling
+10. Initial data population using `data.sql`
 
+---
 
- 5. API Endpoints
+## 5) API Endpoints
 
- 5.1 Engineer APIs
+### 5.1) Engineer APIs
 
 1. `GET /api/v1/engineers?page=&size=`
 2. `GET /api/v1/engineers/{id}`
@@ -46,7 +51,7 @@ Built to practice production-style backend architecture, not demo CRUD.
 5. `DELETE /api/v1/engineers/{id}`
 6. `GET /api/v1/engineers/{id}/tasks`
 
-5.2 Task APIs
+### 5.2) Task APIs
 
 1. `GET /api/v1/tasks?page=&size=`
 2. `GET /api/v1/tasks/{id}`
@@ -57,9 +62,9 @@ Built to practice production-style backend architecture, not demo CRUD.
 7. `GET /api/v1/tasks/{id}/engineer`
 8. `GET /api/v1/tasks/filter?status=OPEN`
 
+---
 
-
-6. Architecture
+## 6) Architecture
 
 1. Controller layer handles HTTP requests and DTOs
 2. Service layer contains business logic and works with entities
@@ -68,8 +73,9 @@ Built to practice production-style backend architecture, not demo CRUD.
 5. Mappers convert between entities and DTOs
 6. Global exception handler provides consistent error responses
 
+---
 
- 7. Project Structure
+## 7) Project Structure
 
 1. controller – REST controllers
 2. service – business logic
@@ -79,18 +85,18 @@ Built to practice production-style backend architecture, not demo CRUD.
 6. model – JPA entities
 7. exception – global error handling
 
+---
 
-
-8. How to Run
+## 8) How to Run
 
 1. Configure PostgreSQL and create a database
 2. Update database credentials in `application.yml`
 3. Run the Spring Boot application
 4. Access APIs at `http://localhost:8080`
 
+---
 
-
- 9. Design Notes
+## 9) Design Notes
 
 1. No authentication implemented intentionally
 2. Focused on clean layering and backend fundamentals
