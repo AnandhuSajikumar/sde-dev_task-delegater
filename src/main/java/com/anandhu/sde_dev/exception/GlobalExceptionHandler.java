@@ -21,4 +21,10 @@ public class GlobalExceptionHandler {
         return ex.getMessage();
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String illegalStateException(IllegalStateException ex){
+        return ex.getMessage();
+    }
+
 }

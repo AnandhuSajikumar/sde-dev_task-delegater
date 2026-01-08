@@ -36,9 +36,6 @@ public class EngineerService {
     public Engineer createEngineer(String name, String techStack, Gender gender){
         Engineer engineer = new Engineer(name,techStack,gender);
         return engineerRepository.save(engineer);
-//        Engineer engineer = EngineerMapper.toEntity(request);
-//        Engineer saved = engineerRepository.save(engineer);
-//        return EngineerMapper.toResponse(saved);
 
     }
 }

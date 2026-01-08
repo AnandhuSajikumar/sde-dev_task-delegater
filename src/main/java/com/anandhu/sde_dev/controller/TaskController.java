@@ -24,28 +24,48 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
+
+//Create a task
+    @PostMapping
+    public TaskResponse createNewTask(@Valid @RequestBody TaskRequest request){
+        Task task = taskService.createTask(
+                request.getTitle(),
+                request.getStatus()
+        );
+        return TaskMapper.toResponse(task);
+    }
+
 //assignEngineer
     @PutMapping("/{taskId}/assign/{engineerId}")
     public TaskResponse assignTaskToEnigneer(@PathVariable Long taskId, @PathVariable Long engineerId){
         Task task = taskService.assignTaskToEngineer(taskId,engineerId);
         return TaskMapper.toResponse(task);
     }
+    //Unassign Task
+    @PutMapping("/{taskId}/unassign")
+    public TaskResponse unAssignTask(@PathVariable Long taskId){
+        return TaskMapper.toResponse(taskService.unAssignTask(taskId));
+    }
+
+
     @GetMapping
     public Page<TaskResponse> getAllTask(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "5") int size,
         Pageable pageable){
-        Page<Task> tasks = taskService.getAllTask(PageRequest.of(page,size));
-        return tasks.map(TaskMapper::toResponse);
+        return taskService.getAllTask(PageRequest.of(page,size))
+                .map(TaskMapper::toResponse);
     }
     @GetMapping("/filter")
-    public List<TaskResponse> getTaskByStatus(@RequestParam TaskStatus status){
-        return taskService.getTaskByStatus(status)
-                .stream()
-                .map(TaskMapper::toResponse)
-                .toList();
-    }
+    public Page<TaskResponse> getTaskByStatus(
+            @RequestParam TaskStatus status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Pageable pageable) {
 
+        return taskService.getTaskByStatus(status, pageable)
+                .map(TaskMapper::toResponse);
+    }
 
     @GetMapping("/{id}")
     public TaskResponse getTaskById(@PathVariable Long id){
@@ -57,6 +77,26 @@ public class TaskController {
         Task task = taskService.getTaskById(id);
         return EngineerMapper.toResponse(task.getEngineer());
     }
+    @GetMapping("/unassigned")
+    public Page<TaskResponse> getAlUnassignedTasks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Pageable pageable
+    ){
+        return taskService.findTaskToBeAssigned(PageRequest.of(page,size))
+                .map(TaskMapper::toResponse);
+    }
+
+    @GetMapping("/assigned")
+    public Page<TaskResponse> getAllAssignedTasks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Pageable pageable
+    ){
+        return taskService.findAllAssignedTasks(PageRequest.of(page,size))
+                .map(TaskMapper::toResponse);
+    }
+
 
     @PutMapping("/{id}")
     public TaskResponse UpdateTaskById(
@@ -77,13 +117,5 @@ public class TaskController {
         taskService.deleteTaskById(id);
     }
 
-    @PostMapping
-    public TaskResponse createNewTask(@Valid @RequestBody TaskRequest request){
-        Task task = taskService.createTask(
-                request.getTitle(),
-                request.getStatus()
-        );
-        return TaskMapper.toResponse(task);
-    }
 
 }
