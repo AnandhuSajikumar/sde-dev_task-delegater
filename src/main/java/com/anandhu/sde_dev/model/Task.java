@@ -17,6 +17,9 @@ public class Task {
     @NotNull
     private TaskStatus status;
 
+    @Version
+    private Long version;
+
     @ManyToOne
     @JoinColumn(name = "engineer_id")
     private Engineer engineer;
