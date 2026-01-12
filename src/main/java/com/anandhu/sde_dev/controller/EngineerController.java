@@ -58,6 +58,19 @@ public class EngineerController {
         );
         return EngineerMapper.toResponse(engineer);
     }
+    @PatchMapping("update/{id}")
+    public EngineerResponse updateEngineer(
+            @PathVariable Long id,
+            @RequestBody @Valid EngineerRequest request
+            ){
+        Engineer engineer = engineerService.updateProfile(
+                id,
+                request.getAge(),
+                request.getSalary(),
+                request.getTechStack()
+        );
+        return EngineerMapper.toResponse(engineer);
+    }
 
     @DeleteMapping("{id}")
     public void deleteEngineerById(@PathVariable Long id){

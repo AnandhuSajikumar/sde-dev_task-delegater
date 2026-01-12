@@ -29,16 +29,9 @@ public class Engineer {
     private List<Task> tasks = new ArrayList<>();
 
 
-    public Engineer() {
+    protected Engineer() {
     }
 
-    public Engineer(String name, Integer age, Gender gender, BigDecimal salary, String techStack) {
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
-        this.salary = salary;
-        this.techStack = techStack;
-    }
     public Engineer(String name, String techStack, Gender gender) {
         this.name = name;
         this.techStack = techStack;
@@ -52,9 +45,6 @@ public class Engineer {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
 
     public Long getId() {
         return id;
@@ -64,41 +54,69 @@ public class Engineer {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getAge() {
         return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
     public BigDecimal getSalary() {
         return salary;
     }
 
-    public void setSalary(BigDecimal salary) {
-        this.salary = salary;
-    }
 
     public String getTechStack() {
         return techStack;
     }
 
-    public void setTechStack(String techStack) {
+
+    public static Engineer create(String name,String techStack, Gender gender){
+        if(name == null || name.isBlank()){
+            throw new IllegalArgumentException("Name cannot be blank");
+        }
+        if(techStack == null || techStack.isBlank()){
+            throw new IllegalArgumentException("Teach Stack cannot be blank");
+        }
+        return new Engineer(name, techStack, gender);
+    }
+
+    public void updateProfile(String name, String techStack){
+        if(name == null || name.isBlank()){
+            throw new IllegalArgumentException("Name cannot be blank");
+        }
+        if(techStack == null || techStack.isBlank()){
+            throw new IllegalArgumentException("Teach Stack cannot be blank");
+        }
+        this.name = name;
         this.techStack = techStack;
     }
+    public void changeGender(Gender gender){
+        if(gender == null){
+            throw new IllegalArgumentException("Gender cannt be Null");
+        }
+        this.gender = gender;
+    }
+    public void updateSalary(BigDecimal salary){
+        if(salary == null || salary.signum() < 0){
+            throw new IllegalArgumentException("Salary cannot be Null");
+        }
+        this.salary = salary;
+    }
+    public void updateAge(Integer age){
+        if(age != null && age < 0){
+            throw new IllegalArgumentException("Invalid Age");
+        }
+        this.age = age;
+    }
+    public void updateTechStack(String techStack){
+        if(techStack == null || techStack.isBlank()){
+            throw new IllegalArgumentException("Tech Stack cannot be blank");
+        }
+        this.techStack = techStack;
+    }
+
 
     @Override
     public boolean equals(Object o) {
