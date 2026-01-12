@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 @Entity
 public class Engineer {
@@ -28,21 +28,17 @@ public class Engineer {
     @OneToMany(mappedBy = "engineer")
     private List<Task> tasks = new ArrayList<>();
 
-
     protected Engineer() {
     }
 
-    public Engineer(String name, String techStack, Gender gender) {
+    private  Engineer(String name, String techStack, Gender gender) {
         this.name = name;
         this.techStack = techStack;
         this.gender = gender;
     }
-    public Engineer(List<Task> tasks) {
-        this.tasks = tasks;
-    }
 
     public List<Task> getTasks() {
-        return tasks;
+        return List.copyOf(tasks);
     }
 
 
@@ -82,25 +78,22 @@ public class Engineer {
         return new Engineer(name, techStack, gender);
     }
 
-    public void updateProfile(String name, String techStack){
+    public void updateName(String name){
         if(name == null || name.isBlank()){
             throw new IllegalArgumentException("Name cannot be blank");
         }
-        if(techStack == null || techStack.isBlank()){
-            throw new IllegalArgumentException("Teach Stack cannot be blank");
-        }
         this.name = name;
-        this.techStack = techStack;
+
     }
-    public void changeGender(Gender gender){
+    public void updateGender(Gender gender){
         if(gender == null){
-            throw new IllegalArgumentException("Gender cannt be Null");
+            throw new IllegalArgumentException("Gender cannot be Null");
         }
         this.gender = gender;
     }
     public void updateSalary(BigDecimal salary){
         if(salary == null || salary.signum() < 0){
-            throw new IllegalArgumentException("Salary cannot be Null");
+            throw new IllegalArgumentException("Salary cannot be negative");
         }
         this.salary = salary;
     }
@@ -120,13 +113,14 @@ public class Engineer {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Engineer engineer = (Engineer) o;
-        return Objects.equals(id, engineer.id);
+        if (this == o) return true;
+        if (!(o instanceof Engineer other)) return false;
+        return id != null && id.equals(other.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return 31;
     }
+
 }

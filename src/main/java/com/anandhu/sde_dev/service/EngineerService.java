@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+
 
 @Service
 public class EngineerService {
@@ -31,22 +31,34 @@ public class EngineerService {
     //Update PROFILE
     public Engineer updateProfile(
             Long engineerId,
+            String name,
             Integer age,
             BigDecimal salary,
+            Gender gender,
             String techStack
     ){
         Engineer engineer = engineerRepository.findById(engineerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Engineer Not Found"));
 
+        if(name != null){
+            engineer.updateName(name);
+        }
+
         if(age != null){
             engineer.updateAge(age);
         }
+
         if(salary != null){
             engineer.updateSalary(salary);
         }
+        if(gender != null){
+            engineer.updateGender(gender);
+        }
+
         if(techStack != null){
             engineer.updateTechStack(techStack);
         }
+
         return engineerRepository.save(engineer);
 
     }
@@ -62,12 +74,9 @@ public class EngineerService {
                .orElseThrow(() -> new ResourceNotFoundException("Engineer not found with id: " + id));
     }
 //DeleteById
-    public void deleteEngineerById(Long id){
-        if (!engineerRepository.existsById(id)) {
-            throw new IllegalStateException("Engineer with id " + id + " does not exist");
-        }
-        engineerRepository.deleteById(id);
+    public void deleteEngineerById(Long id) {
+        Engineer engineer = engineerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Engineer not found"));
+        engineerRepository.delete(engineer);
     }
-
-
 }
