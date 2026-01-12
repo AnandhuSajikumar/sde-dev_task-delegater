@@ -50,15 +50,6 @@ public class EngineerController {
         Engineer engineer = engineerService.getEngineerById(id);
         return EngineerMapper.toResponse(engineer);
     }
-    @GetMapping("/{id}/tasks")
-    public List<TaskResponse> getAllTasksofEngineer(@PathVariable Long id){
-        Engineer engineer = engineerService.getEngineerById(id);
-        return engineer.getTasks()
-                .stream()
-                .map(TaskMapper::toResponse)
-                .toList();
-    }
-
 
     @PatchMapping("update/{id}")
     public EngineerResponse updateEngineer(

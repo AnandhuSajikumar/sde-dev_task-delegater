@@ -59,6 +59,10 @@ public class TaskService {
     public Page<Task> getTaskByStatus(TaskStatus status, Pageable pageable){
         return taskRepository.findTaskByStatus(status, pageable);
     }
+    //find tasks of an engineer by id
+    public Page<Task> tasksOfEngineer(Long engineerId, Pageable pageable){
+        return taskRepository.findByEngineerId(engineerId, pageable);
+    }
 
     //find all unassigned tasks
     public Page<Task> findTaskToBeAssigned(Pageable pageable){

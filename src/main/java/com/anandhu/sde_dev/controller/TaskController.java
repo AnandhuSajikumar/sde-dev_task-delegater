@@ -51,6 +51,16 @@ public class TaskController {
         return taskService.getAllTask(pageable)
                 .map(TaskMapper::toResponse);
     }
+    @GetMapping("{id}/tasks")
+    public Page<TaskResponse> getAllTaskByEngineer(
+            @PathVariable Long id,
+            @PageableDefault(size = 5)
+            Pageable pageable){
+        return taskService.tasksOfEngineer(id, pageable)
+                .map(TaskMapper::toResponse);
+    }
+
+
     @GetMapping("/filter")
     public Page<TaskResponse> getTaskByStatus(
             @RequestParam TaskStatus status,
