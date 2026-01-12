@@ -22,8 +22,8 @@ public class TaskService {
     }
 
     //Create TASK
-    public Task createTask(String title, TaskStatus taskStatus) {
-        Task task = new Task(title, taskStatus);
+    public Task createTask(String title) {
+        Task task = Task.create(title);
         return taskRepository.save(task);
     }
     //Read-GetAllTask
@@ -33,11 +33,10 @@ public class TaskService {
 
 
     //UpdateTASK
-    public Task UpdateTask(Long id, String title, TaskStatus taskStatus){
+    public Task UpdateTask(Long id, String title){
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
-        task.setTitle(title);
-        task.setStatus(taskStatus);
+        task.updateTitle(title);
         return taskRepository.save(task);
     }
 
@@ -70,23 +69,35 @@ public class TaskService {
     public Page<Task> findAllAssignedTasks(Pageable pageable){
         return taskRepository.findByEngineerIsNotNull(pageable);
     }
+//Complete Task
+    @Transactional
+    public Task completeTask(Long taskId, Long engineerId){
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() ->  new ResourceNotFoundException("Task not found"));
+
+        Engineer engineer = engineerRepository.findById(engineerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Engineer not found"));
+
+        if(task.getEngineer() == null || !task.getEngineer().getId().equals(engineerId)){
+            throw new IllegalStateException("Task not assigned to this engineer");
+        }
+        task.complete();
+
+        return taskRepository.save(task);
+    }
+
 
     //assigning TASK
     @Transactional
     public Task assignTaskToEngineer(Long taskId, Long engineerId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        if(task.getStatus() == TaskStatus.DONE){
-            throw new IllegalStateException("Cannot assign a completed task");
-        }
-        if(task.getStatus() == TaskStatus.OPEN){
-            task.setStatus(TaskStatus.IN_PROGRESS);
-        }
 
         Engineer engineer = engineerRepository.findById(engineerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Engineer not found"));
 
-        task.setEngineer(engineer);
+        task.assignTo(engineer);
+
         return taskRepository.save(task);
     }
 
@@ -95,8 +106,8 @@ public class TaskService {
     public Task unAssignTask(Long taskId){
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        task.setEngineer(null);
-        task.setStatus(TaskStatus.OPEN);
+
+        task.unassign();
 
         return taskRepository.save(task);
     }

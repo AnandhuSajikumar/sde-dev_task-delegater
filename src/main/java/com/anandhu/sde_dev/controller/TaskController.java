@@ -10,11 +10,10 @@ import com.anandhu.sde_dev.model.Task;
 import com.anandhu.sde_dev.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -29,8 +28,7 @@ public class TaskController {
     @PostMapping
     public TaskResponse createNewTask(@Valid @RequestBody TaskRequest request){
         Task task = taskService.createTask(
-                request.getTitle(),
-                request.getStatus()
+                request.getTitle()
         );
         return TaskMapper.toResponse(task);
     }
@@ -49,18 +47,14 @@ public class TaskController {
 
 
     @GetMapping
-    public Page<TaskResponse> getAllTask(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "5") int size,
-        Pageable pageable){
-        return taskService.getAllTask(PageRequest.of(page,size))
+    public Page<TaskResponse> getAllTask(@PageableDefault(size = 5) Pageable pageable){
+        return taskService.getAllTask(pageable)
                 .map(TaskMapper::toResponse);
     }
     @GetMapping("/filter")
     public Page<TaskResponse> getTaskByStatus(
             @RequestParam TaskStatus status,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
+            @PageableDefault(size = 5)
             Pageable pageable) {
 
         return taskService.getTaskByStatus(status, pageable)
@@ -79,21 +73,19 @@ public class TaskController {
     }
     @GetMapping("/unassigned")
     public Page<TaskResponse> getAlUnassignedTasks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
+            @PageableDefault(size = 5)
             Pageable pageable
     ){
-        return taskService.findTaskToBeAssigned(PageRequest.of(page,size))
+        return taskService.findTaskToBeAssigned(pageable)
                 .map(TaskMapper::toResponse);
     }
 
     @GetMapping("/assigned")
     public Page<TaskResponse> getAllAssignedTasks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
+            @PageableDefault(size = 5)
             Pageable pageable
     ){
-        return taskService.findAllAssignedTasks(PageRequest.of(page,size))
+        return taskService.findAllAssignedTasks(pageable)
                 .map(TaskMapper::toResponse);
     }
 
@@ -106,12 +98,23 @@ public class TaskController {
 
         Task task = taskService.UpdateTask(
                 id,
-                request.getTitle(),
-                request.getStatus()
+                request.getTitle()
         );
         return TaskMapper.toResponse(task);
 
     }
+
+    @PostMapping("/{taskId}/complete")
+    public TaskResponse completeTask(
+            @PathVariable Long taskId,
+            @RequestParam Long engineerId
+    ){
+        Task task = taskService.completeTask(taskId,engineerId);
+        return TaskMapper.toResponse((task));
+
+    }
+
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id){
         taskService.deleteTaskById(id);

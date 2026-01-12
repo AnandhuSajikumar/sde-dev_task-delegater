@@ -8,19 +8,18 @@ public class TaskRequest {
 
     @NotBlank
     private String title;
-    @NotNull
-    private TaskStatus Status;
 
-    public TaskRequest(String title, TaskStatus Status) {
+    public TaskRequest() {
+    }
+
+
+    public TaskRequest(String title) {
         this.title = title;
-        this.Status = Status;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public TaskStatus getStatus() {
-        return Status;
-    }
+
 }

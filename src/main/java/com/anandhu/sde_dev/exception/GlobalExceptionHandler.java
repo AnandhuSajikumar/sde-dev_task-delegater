@@ -45,5 +45,14 @@ public class GlobalExceptionHandler {
         );
 
     }
-
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleVersion(IllegalArgumentException ex, HttpServletRequest request) {
+        return new ApiError(
+                400,
+                "CONCURRENT_UPDATE",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+    }
 }
