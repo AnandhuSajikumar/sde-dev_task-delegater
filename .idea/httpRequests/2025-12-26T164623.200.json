@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Build REST API",
+    "taskStatus": "OPEN",
+    "engineerId": 1
+  },
+  {
+    "id": 4,
+    "title": "Write unit tests",
+    "taskStatus": "OPEN",
+    "engineerId": 2
+  },
+  {
+    "id": 7,
+    "title": "Optimize queries",
+    "taskStatus": "OPEN",
+    "engineerId": null
+  },
+  {
+    "id": 10,
+    "title": "Dockerize app",
+    "taskStatus": "OPEN",
+    "engineerId": 4
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "title": "Build REST API",
+      "taskStatus": "OPEN",
+      "engineerId": 1
+    },
+    {
+      "id": 2,
+      "title": "Fix pagination bug",
+      "taskStatus": "IN_PROGRESS",
+      "engineerId": 1
+    },
+    {
+      "id": 3,
+      "title": "Design DB schema",
+      "taskStatus": "DONE",
+      "engineerId": 2
+    },
+    {
+      "id": 4,
+      "title": "Write unit tests",
+      "taskStatus": "OPEN",
+      "engineerId": 2
+    },
+    {
+      "id": 5,
+      "title": "Set up CI pipeline",
+      "taskStatus": "IN_PROGRESS",
+      "engineerId": 4
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 5,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": false,
+  "totalElements": 12,
+  "totalPages": 3,
+  "size": 5,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "first": true,
+  "numberOfElements": 5,
+  "empty": false
+}
