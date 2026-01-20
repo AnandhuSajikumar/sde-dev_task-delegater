@@ -15,16 +15,14 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "_user")
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String firstname;
@@ -40,6 +38,14 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User(String firstname, String lastname, String email, String password, Role role) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
     public void promoteToAdmin(){
         this.role = Role.ADMIN;
@@ -76,4 +82,23 @@ public class User implements UserDetails {
     public boolean isEnabled(){
         return true;
     }
+
+
+    public static User register(
+            String firstname,
+            String lastname,
+            String email,
+            String encodedPassword,
+            Role role
+    ){
+        User user = new User();
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.email = email;
+        user.password = encodedPassword;
+        user.role = role;
+        return user;
+
+    }
+
 }
