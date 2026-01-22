@@ -1,4 +1,5 @@
 package com.anandhu.sde_dev.dto.auth;
+import com.anandhu.sde_dev.common.Role;
 import lombok.*;
 
 @Getter
@@ -10,5 +11,6 @@ public class RegisterRequest {
     private String lastname;
     private String email;
     private String password;
+    private Role role;
 
 }

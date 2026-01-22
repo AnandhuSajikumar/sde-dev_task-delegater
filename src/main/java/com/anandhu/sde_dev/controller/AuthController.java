@@ -17,15 +17,16 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @PostMapping("/register")
+    public AuthResponse register(@RequestBody RegisterRequest request) {
+        authService.register(request);
+        return new AuthResponse("User registered successfully");
+    }
+
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest request){
         authService.authenticate(request.getEmail(), request.getPassword());
         return new AuthResponse("Login Successful");
     }
 
-    @PostMapping("/register")
-    public AuthResponse register(@RequestBody RegisterRequest request) {
-        authService.register(request);
-        return new AuthResponse("User registered successfully");
-    }
 }
