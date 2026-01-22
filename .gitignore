@@ -1,3 +1,4 @@
 # Local Spring profiles
 application-local.properties
 frontend
+/target/
