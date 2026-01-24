@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,8 @@ public class EngineerController {
     }
 
 
-    @PostMapping
+    @PostMapping("/me")
+    @PreAuthorize("hasRole('USER')")
     public EngineerResponse createEngineerProfile(@RequestBody @Valid EngineerRequest request){
 
         String email = SecurityContextHolder
@@ -45,7 +47,8 @@ public class EngineerController {
         return EngineerMapper.toResponse(engineer);
     }
 
-    @GetMapping
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<EngineerResponse> getAllEngineers(
             @PageableDefault(size = 5)
             Pageable pageable
@@ -55,27 +58,34 @@ public class EngineerController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public EngineerResponse getEngineerById(@PathVariable Long id){
         Engineer engineer = engineerService.getEngineerById(id);
         return EngineerMapper.toResponse(engineer);
     }
 
     @PatchMapping("update/{id}")
+    @PreAuthorize("hasRole('USER')")
     public EngineerResponse updateEngineer(
-            @PathVariable Long id,
             @RequestBody @Valid EngineerUpdateRequest request
             ){
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
         Engineer engineer = engineerService.updateProfile(
-                id,
+                email,
                 request.getName(),
                 request.getAge(),
-                request.getSalary(),
                 request.getGender(),
                 request.getTechStack()
         );
         return EngineerMapper.toResponse(engineer);
     }
 
+    @GetMapping("me/tasks")
+    @PreAuthorize("hasRole('USER')")
     public Page<TaskResponse> getMyTasks(
             @PageableDefault(size = 5)
             Pageable pageable){
@@ -91,6 +101,7 @@ public class EngineerController {
 
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteEngineerById(@PathVariable Long id){
         engineerService.deleteEngineerById(id);
     }

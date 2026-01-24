@@ -9,10 +9,7 @@ import com.anandhu.sde_dev.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 
 @Service
@@ -38,14 +35,13 @@ public class EngineerService {
     @Transactional
     //Update PROFILE
     public Engineer updateProfile(
-            Long engineerId,
+            String email,
             String name,
             Integer age,
-            BigDecimal salary,
             Gender gender,
             String techStack
     ){
-        Engineer engineer = engineerRepository.findById(engineerId)
+        Engineer engineer = engineerRepository.findByUserEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Engineer Not Found"));
 
         if(name != null){
@@ -56,9 +52,6 @@ public class EngineerService {
             engineer.updateAge(age);
         }
 
-        if(salary != null){
-            engineer.updateSalary(salary);
-        }
         if(gender != null){
             engineer.updateGender(gender);
         }

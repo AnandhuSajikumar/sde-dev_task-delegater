@@ -1,5 +1,8 @@
 package com.anandhu.sde_dev.dto.engineer;
 
+import lombok.Getter;
+
+@Getter
 public class EngineerResponse {
     private Long id;
     private String name;
@@ -11,15 +14,4 @@ public class EngineerResponse {
         this.techStack = techStack;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getTechStack() {
-        return techStack;
-    }
 }

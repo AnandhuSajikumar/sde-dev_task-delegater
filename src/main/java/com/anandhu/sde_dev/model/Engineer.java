@@ -21,7 +21,6 @@ public class Engineer {
     @Enumerated(EnumType.STRING)
     @NotNull
     private Gender gender;
-    private BigDecimal salary;
     @NotBlank
     private String techStack;
 
@@ -60,10 +59,6 @@ public class Engineer {
 
     public Gender getGender() {
         return gender;
-    }
-
-    public BigDecimal getSalary() {
-        return salary;
     }
 
 
@@ -108,12 +103,7 @@ public class Engineer {
         }
         this.gender = gender;
     }
-    public void updateSalary(BigDecimal salary){
-        if(salary == null || salary.signum() < 0){
-            throw new IllegalArgumentException("Salary cannot be negative");
-        }
-        this.salary = salary;
-    }
+
     public void updateAge(Integer age){
         if(age != null && age < 0){
             throw new IllegalArgumentException("Invalid Age");
