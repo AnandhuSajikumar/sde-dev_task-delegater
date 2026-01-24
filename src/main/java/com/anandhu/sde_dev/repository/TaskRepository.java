@@ -12,5 +12,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Page<Task> findByEngineerId(Long engineerId, Pageable pageable);
     Page<Task> findByEngineerIsNull(Pageable pageable);
     Page<Task> findByEngineerIsNotNull(Pageable pageable);
-
+    Page<Task> findByEngineerUserEmail(String email, Pageable pageable);
 }

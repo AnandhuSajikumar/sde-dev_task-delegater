@@ -64,6 +64,10 @@ public class TaskService {
         return taskRepository.findByEngineerId(engineerId, pageable);
     }
 
+    public Page<Task> findTasksByEngineerEmail(String email, Pageable pageable){
+        return taskRepository.findByEngineerUserEmail(email,pageable);
+    }
+
     //find all unassigned tasks
     public Page<Task> findTaskToBeAssigned(Pageable pageable){
         return taskRepository.findByEngineerIsNull(pageable);
@@ -75,14 +79,14 @@ public class TaskService {
     }
 //Complete Task
     @Transactional
-    public Task completeTask(Long taskId, Long engineerId){
+    public Task completeTask(Long taskId, String email){
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() ->  new ResourceNotFoundException("Task not found"));
 
-        Engineer engineer = engineerRepository.findById(engineerId)
+        Engineer engineer = engineerRepository.findByUserEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Engineer not found"));
 
-        if(task.getEngineer() == null || !task.getEngineer().getId().equals(engineerId)){
+        if(task.getEngineer() == null || !task.getEngineer().getId().equals(engineer.getId())){
             throw new IllegalStateException("Task not assigned to this engineer");
         }
         task.complete();

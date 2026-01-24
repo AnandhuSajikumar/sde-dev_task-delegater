@@ -2,12 +2,14 @@ package com.anandhu.sde_dev.service;
 
 import com.anandhu.sde_dev.common.Gender;
 import com.anandhu.sde_dev.model.Engineer;
-import com.anandhu.sde_dev.model.Task;
+import com.anandhu.sde_dev.model.User;
 import com.anandhu.sde_dev.repository.EngineerRepository;
 import com.anandhu.sde_dev.exception.ResourceNotFoundException;
+import com.anandhu.sde_dev.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,14 +18,19 @@ import java.math.BigDecimal;
 @Service
 public class EngineerService {
     private final EngineerRepository engineerRepository;
+    private final UserRepository userRepository;
 
-    public EngineerService(EngineerRepository engineerRepository) {
+    public EngineerService(EngineerRepository engineerRepository, UserRepository userRepository) {
         this.engineerRepository = engineerRepository;
+        this.userRepository = userRepository;
     }
 
     //POST
-    public Engineer createEngineer(String name, String techStack, Gender gender){
-        Engineer engineer = Engineer.create(name, techStack, gender);
+    public Engineer createForUser(String email, String name, String techStack, Gender gender){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Engineer engineer = Engineer.createFor(user, name, techStack, gender);
         return engineerRepository.save(engineer);
 
     }

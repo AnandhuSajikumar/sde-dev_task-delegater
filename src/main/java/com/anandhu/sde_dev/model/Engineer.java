@@ -25,6 +25,10 @@ public class Engineer {
     @NotBlank
     private String techStack;
 
+    @OneToOne(optional = false)
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
+
     @OneToMany(mappedBy = "engineer")
     private List<Task> tasks = new ArrayList<>();
 
@@ -68,6 +72,12 @@ public class Engineer {
     }
 
 
+    public static Engineer createFor(User user, String name,String techStack, Gender gender){
+        Engineer engineer = Engineer.create(name, techStack, gender);
+        engineer.assignUser(user);
+        return engineer;
+    }
+
     public static Engineer create(String name,String techStack, Gender gender){
         if(name == null || name.isBlank()){
             throw new IllegalArgumentException("Name cannot be blank");
@@ -76,6 +86,13 @@ public class Engineer {
             throw new IllegalArgumentException("Teach Stack cannot be blank");
         }
         return new Engineer(name, techStack, gender);
+    }
+
+    public void assignUser(User user){
+        if(this.user != null){
+            throw new IllegalStateException("Engineer already linked to a user");
+        }
+        this.user = user;
     }
 
     public void updateName(String name){
