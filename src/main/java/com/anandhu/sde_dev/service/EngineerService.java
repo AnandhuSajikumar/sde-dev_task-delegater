@@ -81,4 +81,10 @@ public class EngineerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Engineer not found"));
         engineerRepository.delete(engineer);
     }
+
+    public Engineer getEngineerByUserEmail(String email) {
+        return engineerRepository.findByUserEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Engineer not found"));
+
+    }
 }

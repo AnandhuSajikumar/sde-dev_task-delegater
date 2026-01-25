@@ -10,6 +10,7 @@ import com.anandhu.sde_dev.mapper.TaskMapper;
 import com.anandhu.sde_dev.dto.task.TaskResponse;
 import com.anandhu.sde_dev.service.TaskService;
 import jakarta.validation.Valid;
+import org.apache.catalina.Engine;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -63,6 +64,19 @@ public class EngineerController {
         Engineer engineer = engineerService.getEngineerById(id);
         return EngineerMapper.toResponse(engineer);
     }
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('USER')")
+    public EngineerResponse getMyEngineer(){
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        Engineer engineer = engineerService.getEngineerByUserEmail(email);
+        return EngineerMapper.toResponse(engineer);
+    }
+
+
 
     @PatchMapping("update/{id}")
     @PreAuthorize("hasRole('USER')")
