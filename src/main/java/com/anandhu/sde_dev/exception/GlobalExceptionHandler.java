@@ -4,7 +4,9 @@ package com.anandhu.sde_dev.exception;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -51,8 +53,39 @@ public class GlobalExceptionHandler {
     public ApiError handleVersion(IllegalArgumentException ex, HttpServletRequest request) {
         return new ApiError(
                 400,
-                "CONCURRENT_UPDATE",
+                "INVALID REQUEST",
                 ex.getMessage(),
+                request.getRequestURI()
+        );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleValidationErrors(MethodArgumentNotValidException ex,
+                                           HttpServletRequest request) {
+
+        StringBuilder sb = new StringBuilder();
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            sb.append(error.getField())
+                    .append(": ")
+                    .append(error.getDefaultMessage())
+                    .append("; ");
+        }
+
+        return new ApiError(
+                400,
+                "VALIDATION_FAILED",
+                sb.toString(),
+                request.getRequestURI()
+        );
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiError badCredentials(BadCredentialsException ex, HttpServletRequest request){
+        return new ApiError(
+                401,
+                "AUTHENTICATION_FAILED",
+                "Invalid email or password",
                 request.getRequestURI()
         );
     }
