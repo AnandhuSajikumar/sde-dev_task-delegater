@@ -22,9 +22,8 @@ public class AuthService {
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
 
-
     @Transactional
-    public void register(RegisterRequest request) {
+    public String register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalStateException("Email already exists");
         }
@@ -34,16 +33,29 @@ public class AuthService {
                 request.getLastname(),
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
-                Role.USER
-        );
+                Role.USER);
 
         userRepository.save(user);
+
+        return jwtService.generateToken(user);
     }
 
-    public String authenticate(String email, String password){
+    public String authenticate(String email, String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         return jwtService.generateToken(userDetails);
+    }
+
+    @Transactional
+    public void promoteToAdmin(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+        user.promoteToAdmin();
+        userRepository.save(user);
+    }
+
+    public java.util.List<com.anandhu.sde_dev.model.User> getAllUsers() {
+        return userRepository.findAll();
     }
 }
