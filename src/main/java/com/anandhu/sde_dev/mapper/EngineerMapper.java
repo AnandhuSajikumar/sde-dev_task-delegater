@@ -6,12 +6,11 @@ import com.anandhu.sde_dev.model.Engineer;
 
 public class EngineerMapper {
 
-
     public static EngineerResponse toResponse(Engineer engineer) {
         return new EngineerResponse(
                 engineer.getId(),
                 engineer.getName(),
-                engineer.getTechStack()
-        );
+                engineer.getTechStack(),
+                engineer.getGender());
     }
 }

@@ -12,7 +12,6 @@ public class TaskRequest {
     public TaskRequest() {
     }
 
-
     public TaskRequest(String title) {
         this.title = title;
     }
@@ -21,5 +20,8 @@ public class TaskRequest {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 }

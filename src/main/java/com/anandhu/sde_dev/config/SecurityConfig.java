@@ -33,7 +33,7 @@ public class SecurityConfig {
                                                                 "/swagger-ui.html")
                                                 .permitAll()
                                                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                                                .anyRequest().hasRole("USER"))
+                                                .anyRequest().authenticated())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authenticationProvider(authenticationProvider)

@@ -78,8 +78,9 @@ export const AdminTasks = () => {
             setNewTaskTitle('');
             setCurrentTask(null);
             fetchTasks();
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            console.error("Failed to save task", error);
+            alert(`Failed to save task: ${error.response?.data?.message || error.message}`);
         }
     };
 

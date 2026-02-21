@@ -6,8 +6,8 @@ import { Trash2, ExternalLink } from 'lucide-react';
 interface Engineer {
     id: number;
     name: string;
-    email: string; // Wait, Check EngineerResponse
-    techStack: string[];
+    email: string;
+    techStack: string;
     gender: string;
 }
 
@@ -71,8 +71,8 @@ export const AdminEngineers = () => {
                                     <td style={{ padding: '1rem', fontWeight: 500 }}>{engineer.name}</td>
                                     <td style={{ padding: '1rem' }}>
                                         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                            {engineer.techStack?.map((tech) => (
-                                                <span key={tech} className="badge badge-blue">{tech}</span>
+                                            {engineer.techStack && engineer.techStack.split(',').map((tech) => (
+                                                <span key={tech.trim()} className="badge badge-blue">{tech.trim()}</span>
                                             ))}
                                         </div>
                                     </td>
