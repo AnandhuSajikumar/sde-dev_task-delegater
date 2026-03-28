@@ -7,11 +7,12 @@ import com.anandhu.sde_dev.repository.EngineerRepository;
 import com.anandhu.sde_dev.exception.ResourceNotFoundException;
 import com.anandhu.sde_dev.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
+@Slf4j
 @Service
 public class EngineerService {
     private final EngineerRepository engineerRepository;
@@ -24,10 +25,15 @@ public class EngineerService {
 
     //POST
     public Engineer createForUser(String email, String name, String techStack, Gender gender){
+        log.debug("Registering engineer for email={}",email);
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> {
+                    log.warn("Register failed, User not found={}",email);
+                    return new ResourceNotFoundException("User not found");
+                });
 
         Engineer engineer = Engineer.createFor(user, name, techStack, gender);
+        log.info("Engineer creation success email={}",email);
         return engineerRepository.save(engineer);
 
     }
