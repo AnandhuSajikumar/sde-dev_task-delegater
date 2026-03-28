@@ -5,6 +5,8 @@ import com.anandhu.sde_dev.dto.auth.LoginRequest;
 import com.anandhu.sde_dev.dto.auth.RegisterRequest;
 import com.anandhu.sde_dev.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("/register")
     public AuthResponse register(@RequestBody RegisterRequest request) {
@@ -25,7 +28,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest request) {
+        log.info("Login attempt email={}", request.getEmail());
+
         String token = authService.authenticate(request.getEmail(), request.getPassword());
+
+        log.info("Login success email={}", request.getEmail());
 
         return new AuthResponse(token);
     }
