@@ -3,6 +3,7 @@ package com.anandhu.sde_dev.exception;
 
 import jakarta.persistence.OptimisticLockException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
@@ -10,13 +11,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError resourceNotFound(ResourceNotFoundException ex, HttpServletRequest request){
+        log.warn("Resource not found message={} path={}", ex.getMessage(), request.getRequestURI());
         return new ApiError(
                 404,
                 "NOT_FOUND",
@@ -50,7 +52,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleVersion(IllegalArgumentException ex, HttpServletRequest request) {
+    public ApiError handleInvalidRequest(IllegalArgumentException ex, HttpServletRequest request) {
         return new ApiError(
                 400,
                 "INVALID REQUEST",
