@@ -11,9 +11,20 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.View;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final View error;
+
+    public GlobalExceptionHandler(View error) {
+        this.error = error;
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -30,6 +41,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError illegalStateException(IllegalStateException ex, HttpServletRequest request){
+        log.warn("Conflict message={} path={}", ex.getMessage(), request.getRequestURI());
         return new ApiError(
                 409,
                 "CONFLICT",
@@ -42,6 +54,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OptimisticLockException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleVersion(OptimisticLockException ex, HttpServletRequest request){
+        log.warn("Concurrent update failed message={} path={}", ex.getMessage(), request.getRequestURI());
         return new ApiError(
                 409,
                 "CONCURRENT_UPDATE",
@@ -66,18 +79,19 @@ public class GlobalExceptionHandler {
     public ApiError handleValidationErrors(MethodArgumentNotValidException ex,
                                            HttpServletRequest request) {
 
-        StringBuilder sb = new StringBuilder();
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            sb.append(error.getField())
-                    .append(": ")
-                    .append(error.getDefaultMessage())
-                    .append("; ");
+        List<String> errors  = new ArrayList<>();
+
+        for(FieldError error : ex.getBindingResult().getFieldErrors()){
+            errors.add(error.getField() + ":" + error.getDefaultMessage());
         }
+        String errorMessage = String.join("; ",errors);
+
+        log.warn("Validation failed path={} errors={}",request.getRequestURI(), errorMessage);
 
         return new ApiError(
                 400,
                 "VALIDATION_FAILED",
-                sb.toString(),
+                errorMessage,
                 request.getRequestURI()
         );
     }

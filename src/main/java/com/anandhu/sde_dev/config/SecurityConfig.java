@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,13 +28,15 @@ public class SecurityConfig {
                         .csrf(csrf -> csrf.disable())
                         .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(
-                                                                "/api/v1/auth/**",
-                                                                "/v3/api-docs/**",
-                                                                "/swagger-ui/**",
-                                                                "/swagger-ui.html")
+                                        "/api/v1/auth/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html")
                                                 .permitAll()
                                                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated())
+//                        .oauth2Login(Customizer.withDefaults())
+
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authenticationProvider(authenticationProvider)
