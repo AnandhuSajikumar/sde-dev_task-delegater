@@ -1,24 +1,30 @@
 package com.anandhu.sde_dev.service;
 
 import com.anandhu.sde_dev.common.TaskStatus;
+import com.anandhu.sde_dev.dto.task.TaskResponse;
 import com.anandhu.sde_dev.model.Engineer;
 import com.anandhu.sde_dev.repository.EngineerRepository;
 import com.anandhu.sde_dev.exception.ResourceNotFoundException;
 import com.anandhu.sde_dev.model.Task;
 import com.anandhu.sde_dev.repository.TaskRepository;
 import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisher;
+import com.anandhu.sde_dev.event.TaskAssignedEvent;
 
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
     private final EngineerRepository engineerRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public TaskService(TaskRepository taskRepository, EngineerRepository engineerRepository) {
+    public TaskService(TaskRepository taskRepository, EngineerRepository engineerRepository, ApplicationEventPublisher eventPublisher) {
         this.taskRepository = taskRepository;
         this.engineerRepository = engineerRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     //Create TASK
@@ -50,9 +56,16 @@ public class TaskService {
     }
 
     //GetTaskById
-    public Task getTaskById(Long id){
-        return taskRepository.findById(id)
+    public TaskResponse getTaskById(Long id){
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+
+        return new TaskResponse(
+                task.getId(),
+                task.getTitle(),
+                task.getStatus(),
+                task.getEngineer() != null ? task.getEngineer().getId() : null
+        );
     }
 
     //find Task By Status
@@ -91,7 +104,7 @@ public class TaskService {
         }
         task.complete();
 
-        return taskRepository.save(task);
+        return task;
     }
 
 
@@ -106,7 +119,10 @@ public class TaskService {
 
         task.assignTo(engineer);
 
-        return taskRepository.save(task);
+        String email = engineer.getUser().getEmail();
+        eventPublisher.publishEvent(new TaskAssignedEvent(engineer.getId(), task.getId(), task.getTitle(), email));
+
+        return task;
     }
 
     //Unassign a Task
@@ -117,7 +133,7 @@ public class TaskService {
 
         task.unassign();
 
-        return taskRepository.save(task);
+        return task;
     }
 
 }

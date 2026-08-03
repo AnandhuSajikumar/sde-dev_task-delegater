@@ -15,6 +15,9 @@ public class TaskResponse {
         this.engineerId = engineerId;
     }
 
+    public TaskResponse() {
+    }
+
     public Long getId() {
         return id;
     }

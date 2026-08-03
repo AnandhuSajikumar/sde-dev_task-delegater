@@ -66,6 +66,10 @@ public class Engineer {
         return techStack;
     }
 
+    public User getUser() {
+        return user;
+    }
+
 
     public static Engineer createFor(User user, String name,String techStack, Gender gender){
         Engineer engineer = Engineer.create(name, techStack, gender);

@@ -27,7 +27,7 @@ public class TaskController {
     }
 
 //Create a task
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public TaskResponse createNewTask(@Valid @RequestBody TaskRequest request){
         Task task = taskService.createTask(
@@ -51,14 +51,14 @@ public class TaskController {
         return TaskMapper.toResponse(taskService.unAssignTask(taskId));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public Page<TaskResponse> getAllTask(@PageableDefault(size = 5) Pageable pageable){
         return taskService.getAllTask(pageable)
                 .map(TaskMapper::toResponse);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("{id}/tasks")
     public Page<TaskResponse> getAllTaskByEngineer(
             @PathVariable Long id,
@@ -68,7 +68,7 @@ public class TaskController {
                 .map(TaskMapper::toResponse);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/filter")
     public Page<TaskResponse> getTaskByStatus(
             @RequestParam TaskStatus status,
@@ -79,21 +79,21 @@ public class TaskController {
                 .map(TaskMapper::toResponse);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/{id}")
-    public TaskResponse getTaskById(@PathVariable Long id){
-        Task task = taskService.getTaskById(id);
-        return TaskMapper.toResponse(task);
+   // @PreAuthorize("hasRole('ADMIN')")
+   @GetMapping("/{id}")
+   public TaskResponse getTaskById(@PathVariable Long id){
+       return taskService.getTaskById(id);
+
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/{id}/engineer")
-    public EngineerResponse getEngineerofTask(@PathVariable Long id){
-        Task task = taskService.getTaskById(id);
-        return EngineerMapper.toResponse(task.getEngineer());
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("/{id}/engineer")
+//    public EngineerResponse getEngineerofTask(@PathVariable Long id){
+//        Task task = taskService.getTaskById(id);
+//        return EngineerMapper.toResponse(task.getEngineer());
+//    }
 
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/unassigned")
     public Page<TaskResponse> getAlUnassignedTasks(
             @PageableDefault(size = 5)
@@ -113,7 +113,7 @@ public class TaskController {
                 .map(TaskMapper::toResponse);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public TaskResponse UpdateTaskById(
             @PathVariable Long id,
