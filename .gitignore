@@ -5,3 +5,6 @@ application-local.properties
 /.idea/
 /target/
 /target/
+target/classes/application.properties
+*.properties
+/target
